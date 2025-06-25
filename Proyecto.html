@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reciclatón Interactivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9f7f0;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #1b8669;
+    }
+
+    .seccion-info {
+      max-width: 800px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .imagen {
+      width: 200px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .imagen:hover {
+      transform: scale(1.05);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+
+    .video-container {
+      margin: 30px 0;
+    }
+
+    video {
+      width: 90%;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .juego {
+      margin: 30px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 15px;
+      border: 2px solid #1b8669;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 10px;
+      background-color: #1b8669;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .card {
+      width: 60px;
+      height: 60px;
+      background-color: #c4f1df;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌍 Reciclatón Interactivo 🌱</h1>
+
+  <!-- INFO SOBRE EL RECICLATÓN -->
+  <div class="seccion-info">
+    <h2>¿Qué es un Reciclatón?</h2>
+    <p>El Reciclatón es una campaña ecológica donde se recolectan residuos como papel, cartón, electrónicos, pilas, plásticos y más. Su objetivo es reducir la contaminación, fomentar la conciencia ambiental y **darle una segunda vida a los materiales** que normalmente terminarían en la basura.</p>
+    
+    <h3>¿Por qué es importante?</h3>
+    <ul style="text-align:left; max-width: 600px; margin: auto;">
+      <li>♻️ Ayuda a cuidar el medio ambiente.</li>
+      <li>💡 Reduce el uso de recursos naturales.</li>
+      <li>📱 Permite reciclar aparatos electrónicos de forma segura.</li>
+      <li>🌎 Fomenta la cultura del reciclaje en la comunidad.</li>
+    </ul>
+    <p>¡Participar en un reciclatón es una forma divertida y útil de hacer del mundo un lugar mejor!</p>
+  </div>
+
+  <!-- GALERÍA DE IMÁGENES -->
+  <div class="galeria">
+    <img src="Sasha.jpg" class="imagen" onclick="ampliar(this)">
+    <img src="Carlos.jpg" class="imagen" onclick="ampliar(this)">
+    <img src="Manuel.jpg" class="imagen" onclick="ampliar(this)">
+    <img src="Sara.jpg" class="imagen" onclick="ampliar(this)">
+  </div>
+
+  <div class="overlay" id="overlay" onclick="cerrarImagen()">
+    <img id="imgAmpliada" src="">
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-container">
+    <h2>🎥 Video sobre Reciclaje</h2>
+    <video controls>
+      <source src="Sofia.mp4" type="video/mp4">
+      Tu navegador no soporta este video.
+    </video>
+  </div>
+
+  <!-- JUEGO 1: TRIVIA -->
+  <div class="juego">
+    <h2>🎯 Trivia Ecológica</h2>
+    <p>¿Qué tipo de residuo **NO** se puede reciclar fácilmente?</p>
+    <button onclick="responder('carton')">Cartón</button>
+    <button onclick="responder('plastico')">Plástico</button>
+    <button onclick="responder('espejo')">Espejo</button>
+    <p id="resultado1"></p>
+  </div>
+
+  <!-- JUEGO 2: MEMORIA -->
+  <div class="juego">
+    <h2>🧠 Juego de Memoria</h2>
+    <p>Haz clic en dos cartas para encontrar el par correcto:</p>
+    <div class="cards" id="tablero">
+      <div class="card" onclick="destapar(this, '♻️')">?</div>
+      <div class="card" onclick="destapar(this, '🗑️')">?</div>
+      <div class="card" onclick="destapar(this, '🗑️')">?</div>
+      <div class="card" onclick="destapar(this, '♻️')">?</div>
+    </div>
+    <p id="mensajeMemoria"></p>
+  </div>
+
+  <script>
+    // Ampliar imagen
+    function ampliar(img) {
+      document.getElementById("imgAmpliada").src = img.src;
+      document.getElementById("overlay").style.display = "flex";
+    }
+
+    function cerrarImagen() {
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    // Trivia
+    function responder(respuesta) {
+      const resultado = document.getElementById("resultado1");
+      if (respuesta === 'espejo') {
+        resultado.textContent = "¡Correcto! El espejo no es fácil de reciclar.";
+      } else {
+        resultado.textContent = "Ups, veo que esa no es la respuesta correcta.";
+      }
+    }
+
+    // Juego de memoria
+    let primera = null;
+    let bloqueo = false;
+
+    function destapar(carta, simbolo) {
+      if (bloqueo || carta.textContent !== '?') return;
+
+      carta.textContent = simbolo;
+      if (!primera) {
+        primera = { carta, simbolo };
+      } else {
+        if (primera.simbolo === simbolo) {
+          document.getElementById("mensajeMemoria").textContent = "¡Encontraste un par!";
+          primera = null;
+        } else {
+          bloqueo = true;
+          setTimeout(() => {
+            carta.textContent = '?';
+            primera.carta.textContent = '?';
+            document.getElementById("mensajeMemoria").textContent = "Ups, veo que esa no es la respuesta correcta.";
+            primera = null;
+            bloqueo = false;
+          }, 1000);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
+
